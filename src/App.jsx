@@ -4,13 +4,13 @@ import Navbar from "./components/Navbar";
 import Entry from "./pages/Entry";
 import Home from "./pages/Home";
 import Products from "./pages/Products"; // ✅ IMPORT THE NEW MASTER PAGE
-import SellItem from "./pages/SellItem.";
+import SellItem from "./pages/SellItem ";
 
 // Removed NewProducts, SecondHand, and ProductDetails (No longer needed)
 
-import AdminLogin from "./pages/admin/AdminLogin.";
-import AdminDashboard from "./pages/admin/AdminDashboard.";
-import Support from "./pages/Support.";
+import AdminLogin from "./pages/admin/AdminLogin ";
+import AdminDashboard from "./pages/admin/AdminDashboard ";
+import Support from "./pages/Support ";
 
 function App() {
   return (
