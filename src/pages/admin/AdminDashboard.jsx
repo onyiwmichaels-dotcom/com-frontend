@@ -30,8 +30,8 @@ export default function AdminDashboard() {
         pendingRequests: 0
     });
 
-    const API = "http://com-backend-d56z.onrender.com/api";
-    const BASE_URL = "http://com-backend-d56z.onrender.com";
+    const API = import.meta.env.VITE_API_BASE_URL || "https://com-backend-d56z.onrender.com/api";
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://com-backend-d56z.onrender.com";
 
     // ------------------ DATA FETCHING ------------------
 

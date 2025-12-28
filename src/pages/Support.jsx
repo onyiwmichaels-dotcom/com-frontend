@@ -27,7 +27,7 @@ export default function Support() {
             <h2 className="text-xl font-semibold text-gray-800">📸 Instagram Support</h2>
             <p className="text-gray-700 mt-1">
               DM us on Instagram:
-              <span className="font-bold text-blue-700 ml-1">@COM-WALTER</span>
+              <span className="font-bold text-blue-700 ml-1">@COM-KE</span>
             </p>
           </div>
 

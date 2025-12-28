@@ -6,7 +6,7 @@ export default function SellItem() {
   const navigate = useNavigate();
   
   // ✅ Base URL for backend
-  const API_BASE = "http://com-backend-d56z.onrender.com";
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://com-backend-d56z.onrender.com";
 
   const [form, setForm] = useState({
     name: "",

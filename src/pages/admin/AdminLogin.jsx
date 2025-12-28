@@ -10,7 +10,7 @@ export default function AdminLogin() {
 
   // ✅ CRITICAL FIX: Ensure this matches your backend port (8080)
   // AND the correct route (/api/auth/login based on your server.js structure)
-  const API_URL = "http://com-backend-d56z.onrender.com/api/auth/login"; 
+  const API_URL = import.meta.env.VITE_API_BASE_URL || "https://com-backend-d56z.onrender.com/api/auth/login"; 
 
   const handleLogin = async (e) => {
     e.preventDefault();

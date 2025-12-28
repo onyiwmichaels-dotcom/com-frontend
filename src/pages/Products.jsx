@@ -19,10 +19,10 @@ export default function Products() {
   const pageTitle = isSecondHand ? "Second-Hand Items" : "New Products";
   
   // --- API CONFIG ---
-  const API_URL = "http://com-backend-d56z.onrender.com/api/products";
+  const API_URL = import.meta.env.VITE_API_BASE_URL || "https://com-backend-d56z.onrender.com/api/products";
   
   // FIX 1: Point strictly to the server root, not the uploads folder
-  const SERVER_URL = "http://com-backend-d56z.onrender.com";
+  const SERVER_URL = import.meta.env.VITE_API_BASE_URL || "https://com-backend-d56z.onrender.com";
 
   // FIX 2: A helper function to build the correct URL no matter what the database says
   const getImageUrl = (imagePath) => {

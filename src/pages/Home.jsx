@@ -14,7 +14,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   // --- CONFIG ---
-  const SERVER_URL = "http://com-backend-d56z.onrender.com";
+  const SERVER_URL = import.meta.env.VITE_API_BASE_URL || "https://com-backend-d56z.onrender.com";
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("comUser"));
@@ -183,7 +183,7 @@ export default function Home() {
           </div>
 
           <p className="text-xs text-gray-600 pt-4 font-medium border-t border-gray-800 mt-4 w-full">
-            © 2025 Chuka Online Market. All Rights Reserved.
+            © 2026 Chuka Online Market. All Rights Reserved.
           </p>
         </div>
       </footer>

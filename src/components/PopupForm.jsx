@@ -41,7 +41,7 @@ export default function PopupForm({ onClose, onSave, initialData }) {
     fd.append('image', file);
     
     // NOTE: Hardcoded API link for the upload endpoint.
-    const res = await fetch("http://com-backend-d56z.onrender.com/api/admin/upload", {
+    const res = await fetch(import.meta.env.VITE_API_BASE_URL || "https://com-backend-d56z.onrender.com/api/admin/upload", {
       method: 'POST',
       body: fd
     });
