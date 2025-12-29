@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { PackagePlus, Edit, X, UploadCloud, Tag, CheckCircle, XCircle, Phone } from "lucide-react";
+import { API_BASE_URL } from "../../config/api";
 
 export default function PopupForm({ onClose, onSave, initialData }) {
   const [form, setForm] = useState({
@@ -41,7 +42,7 @@ export default function PopupForm({ onClose, onSave, initialData }) {
     fd.append('image', file);
     
     // NOTE: Hardcoded API link for the upload endpoint.
-    const res = await fetch(import.meta.env.VITE_API_BASE_URL || "https://com-backend-d56z.onrender.com/api/admin/upload", {
+    const res = await fetch(`${API_BASE_URL}/api/admin/upload`, {
       method: 'POST',
       body: fd
     });
