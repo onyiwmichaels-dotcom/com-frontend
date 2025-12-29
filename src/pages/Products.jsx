@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Search, Filter, ArrowLeft } from "lucide-react";
 import OrderModal from "../components/modals/OrderModal"; 
+import { API_BASE_URL, apiFetch } from "../config/api";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -19,10 +20,9 @@ export default function Products() {
   const pageTitle = isSecondHand ? "Second-Hand Items" : "New Products";
   
   // --- API CONFIG ---
-  const API_URL = import.meta.env.VITE_API_BASE_URL || "https://com-backend-d56z.onrender.com/api/products";
+  
   
   // FIX 1: Point strictly to the server root, not the uploads folder
-  const SERVER_URL = import.meta.env.VITE_API_BASE_URL || "https://com-backend-d56z.onrender.com";
 
   // FIX 2: A helper function to build the correct URL no matter what the database says
   const getImageUrl = (imagePath) => {
@@ -33,22 +33,23 @@ export default function Products() {
 
     // If the path from DB starts with "/", just add the server URL
     // Example: "/uploads/myimage.jpg" -> "http://localhost:8080/uploads/myimage.jpg"
-    if (imagePath.startsWith("/")) return `${SERVER_URL}${imagePath}`;
+    if (imagePath.startsWith("/")) return `${API_BASE_URL}${imagePath}`;
 
     // Otherwise, assume it needs the uploads folder
-    return `${SERVER_URL}/uploads/${imagePath}`;
+    return `${API_BASE_URL}/uploads/${imagePath}`;
   };
 
   const fetchProducts = async () => {
     setLoading(true);
     try {
       const typeFilter = isSecondHand ? "second-hand" : "new";
-      let url = `${API_URL}?type=${typeFilter}`;
-      if (category) url += `&category=${category}`;
-      if (search) url += `&search=${search}`;
+      let endpoint = `/api/products?type=${typeFilter}`;
+      if (category) endpoint += `&category=${category}`;
+      if (search) endpoint += `&search=${search}`;
 
-      const res = await fetch(url);
-      const data = await res.json();
+      const data = await apiFetch(endpoint);
+
+      
       setProducts(data);
     } catch (error) {
       console.error("❌ Failed to load products", error);

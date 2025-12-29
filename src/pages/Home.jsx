@@ -5,6 +5,7 @@ import {
   Heart, Tv, Shirt, Home as HomeIcon, BookOpen,
   Phone, Instagram
 } from "lucide-react";
+import { API_BASE_URL } from "../config/api";
 
 export default function Home() {
   const [user, setUser] = useState(null);
@@ -14,7 +15,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   // --- CONFIG ---
-  const SERVER_URL = import.meta.env.VITE_API_BASE_URL || "https://com-backend-d56z.onrender.com";
+
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("comUser"));
@@ -23,7 +24,7 @@ export default function Home() {
 
   // FETCH LATEST 4 PRODUCTS
   useEffect(() => {
-    fetch(`${SERVER_URL}/api/products/latest`)
+    fetch(`${API_BASE_URL}/api/products/latest`)
       .then(res => res.json())
       .then(data => {
         const formatted = data
@@ -33,7 +34,7 @@ export default function Home() {
             // Safe image pathing
             displayImage: p.image?.startsWith('http') 
               ? p.image 
-              : `${SERVER_URL}${p.image?.startsWith('/') ? '' : '/'}${p.image}`
+              : `${API_BASE_URL}${p.image?.startsWith('/') ? '' : '/'}${p.image}`
           }));
         setFeaturedProducts(formatted);
       })
