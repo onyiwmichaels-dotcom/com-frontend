@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import PopupForm from "../../components/PopupForm.jsx";
 import { LogOut, Package, ListOrdered, PlusCircle, Trash2, Edit, X, UploadCloud, Tag, CheckCircle, Clock, ShoppingBag, Phone } from "lucide-react";
+import { API_BASE_URL } from "../../config/api";
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
@@ -30,8 +31,8 @@ export default function AdminDashboard() {
         pendingRequests: 0
     });
 
-    const API = import.meta.env.VITE_API_BASE_URL || "https://com-backend-d56z.onrender.com/api";
-    const BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://com-backend-d56z.onrender.com";
+    const API = `${API_BASE_URL}/api`;
+    const BASE_URL = API_BASE_URL;
 
     // ------------------ DATA FETCHING ------------------
 
