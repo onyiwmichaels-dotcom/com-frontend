@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Lock, KeyRound } from "lucide-react";
-import { API_BASE_URL } from "../../config/api";
+// Import the helper instead of the raw URL to prevent path errors
+import { apiPost } from "../../config/api"; 
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -9,47 +10,35 @@ export default function AdminLogin() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // ✅ CRITICAL FIX: Ensure this matches your backend port (8080)
-  // AND the correct route (/api/auth/login based on your server.js structure)
-  const API_URL = `${API_BASE_URL}/api/auth/login`;
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
 
-    // We send 'pin' because your authRoutes.js expects 'pin', NOT 'password'
-    // based on the code you shared earlier: const { pin } = req.body;
-    const credentials = {
-        pin: password // Mapping the input 'password' to the expected 'pin' key
-    };
-
     try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(credentials),
-        });
+      /**
+       * We use the apiPost helper. 
+       * 1. It automatically adds "/api" to the base URL.
+       * 2. It sends the request to the endpoint "/auth/login".
+       * 3. It maps the input 'password' to the expected 'pin' key for the backend.
+       */
+      const data = await apiPost("/auth/login", { pin: password });
 
-        // Check content type to prevent crashing on non-JSON responses
-        const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-            throw new TypeError("Received non-JSON response from server");
-        }
-
-        const data = await response.json();
-
-        if (response.ok && data.success) {
-            localStorage.setItem("isAdmin", "true");
-            navigate("/admin/dashboard");
-        } else {
-            setError(data.error || "Invalid PIN. Try again.");
-        }
+      // If apiPost doesn't throw an error, it means the response was ok and JSON was parsed
+      if (data.success) {
+        localStorage.setItem("isAdmin", "true");
+        navigate("/admin/dashboard");
+      } else {
+        setError(data.error || "Invalid PIN. Try again.");
+      }
     } catch (err) {
-        console.error("Login error:", err);
-        setError("Server connection failed. Is the backend running on port 8080?");
+      console.error("Login error:", err);
+      // If the error message is the HTML 404 from earlier, we give a friendly message
+      setError(err.message.includes("<!DOCTYPE") 
+        ? "Server configuration error (404). Contact support." 
+        : "Server connection failed. Check your internet or if the backend is awake.");
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -72,7 +61,7 @@ export default function AdminLogin() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter Admin PIN"
-          className="w-full p-4 border border-gray-300 rounded-xl mb-6 text-gray-800 focus:ring-2 focus:ring-green-500 transition"
+          className="w-full p-4 border border-gray-300 rounded-xl mb-6 text-gray-800 focus:ring-2 focus:ring-green-500 transition outline-none"
           required
         />
 
