@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { Search, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import OrderModal from "../components/modals/OrderModal"; 
-// Ensure this path is correct based on your folder structure
+// ✅ Verify this import path is correct for your folders
 import { API_BASE_URL, apiFetch } from "../config/api"; 
 
 export default function Products() {
@@ -13,21 +13,28 @@ export default function Products() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const category = searchParams.get("cat");
+  // ✅ FIX 1: Listen for 'cat' OR 'category' to catch all links
+  const category = searchParams.get("cat") || searchParams.get("category");
   const search = searchParams.get("search");
   const typeParam = searchParams.get("type"); 
 
   const isSecondHand = typeParam === "second-hand";
   const pageTitle = isSecondHand ? "Second-Hand Items" : "New Products";
   
-  // ✅ FIX 1: Robust Image URL Helper
+  // ✅ FIX 2: Smart Image URL Builder (Prevents double "uploads/uploads")
   const getImageUrl = (imagePath) => {
     if (!imagePath) return "https://via.placeholder.com/150?text=No+Image";
-    // If it's a full web link, use it
     if (imagePath.startsWith("http")) return imagePath;
-    // If it's a relative path, combine it with the Backend URL
-    // We strip the leading slash to prevent double slashes
-    const cleanPath = imagePath.startsWith("/") ? imagePath.substring(1) : imagePath;
+
+    // Remove leading slash for consistency
+    let cleanPath = imagePath.startsWith("/") ? imagePath.substring(1) : imagePath;
+
+    // If the DB path ALREADY has "uploads/", just add the base URL
+    if (cleanPath.startsWith("uploads/")) {
+      return `${API_BASE_URL}/${cleanPath}`;
+    }
+
+    // Otherwise, add the uploads folder
     return `${API_BASE_URL}/uploads/${cleanPath}`;
   };
 
@@ -36,23 +43,20 @@ export default function Products() {
     try {
       const typeFilter = isSecondHand ? "second-hand" : "new";
       
-      // ✅ FIX 2: REMOVE "/api" from here! 
-      // The apiFetch helper in api.js already adds it.
-      // Was: `/api/products?type=...`  ->  Now: `/products?type=...`
+      // We start with the base endpoint
       let endpoint = `/products?type=${typeFilter}`;
       
+      // Append filters if they exist
       if (category) endpoint += `&category=${category}`;
       if (search) endpoint += `&search=${search}`;
 
-      console.log("Fetching from:", endpoint); // Debug log
+      console.log("🚀 Fetching Products URL:", endpoint); // Debug log
 
       const data = await apiFetch(endpoint);
 
-      // Safety check: ensure data is an array before setting it
       if (Array.isArray(data)) {
         setProducts(data);
       } else {
-        console.error("Data format error: Expected array, got", data);
         setProducts([]);
       }
     } catch (error) {
@@ -62,6 +66,7 @@ export default function Products() {
     }
   };
 
+  // Reload whenever the URL params change
   useEffect(() => {
     fetchProducts();
   }, [category, search, isSecondHand]);
@@ -79,7 +84,7 @@ export default function Products() {
             <ArrowLeft size={18} className="mr-1" /> Back to Home
           </button>
           <h1 className="text-3xl font-bold text-gray-800">
-            {category ? `${category.toUpperCase()}` : pageTitle}
+            {category ? `${category.toUpperCase()} (${isSecondHand ? 'Used' : 'New'})` : pageTitle}
           </h1>
           {search && <p className="text-gray-500">Results for: "{search}"</p>}
         </div>
@@ -101,9 +106,9 @@ export default function Products() {
         <>
           {products.length === 0 ? (
             <div className="text-center py-20">
-              <p className="text-xl text-gray-500">No products found.</p>
+              <p className="text-xl text-gray-500">No products found for this category.</p>
               <button onClick={() => navigate("/shop")} className="mt-4 text-green-700 underline">
-                View all new products
+                View all products
               </button>
             </div>
           ) : (
@@ -115,12 +120,17 @@ export default function Products() {
                   className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:shadow-lg hover:border-green-300 transition group"
                 >
                   {/* Image Container */}
-                  <div className="h-40 w-full overflow-hidden rounded-lg mb-3 bg-gray-100">
-                    <img
+                  <div className="h-40 w-full overflow-hidden rounded-lg mb-3 bg-gray-100 relative">
+                     <img
                       src={getImageUrl(p.image)}
                       alt={p.name}
+                      loading="lazy"
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                      onError={(e) => { e.target.src = 'https://via.placeholder.com/150?text=No+Image'; }}
+                      onError={(e) => { 
+                        // Fallback if image fails
+                        e.target.onerror = null; 
+                        e.target.src = 'https://via.placeholder.com/150?text=No+Image'; 
+                      }}
                     />
                   </div>
                   
@@ -140,9 +150,6 @@ export default function Products() {
         </>
       )}
 
-      {/* ✅ FIX 3: Ensure selectedProduct exists before rendering Modal.
-         If OrderModal has issues, it's likely because it also has a path error inside it.
-      */}
       {selectedProduct && (
         <OrderModal
           product={selectedProduct}
