@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { PackagePlus, Edit, X, UploadCloud, Tag, CheckCircle, XCircle, Phone } from "lucide-react";
-import { API_BASE_URL } from "../../config/api";
+import { API_BASE_URL } from "../config/api";
 
 export default function PopupForm({ onClose, onSave, initialData }) {
   const [form, setForm] = useState({
