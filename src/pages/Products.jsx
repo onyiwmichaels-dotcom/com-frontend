@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { Search, Filter, ArrowLeft } from "lucide-react";
+import { Search, ArrowLeft } from "lucide-react";
 import OrderModal from "../components/modals/OrderModal"; 
-import { API_BASE_URL, apiFetch } from "../config/api";
+// Ensure this path is correct based on your folder structure
+import { API_BASE_URL, apiFetch } from "../config/api"; 
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -19,38 +20,41 @@ export default function Products() {
   const isSecondHand = typeParam === "second-hand";
   const pageTitle = isSecondHand ? "Second-Hand Items" : "New Products";
   
-  // --- API CONFIG ---
-  
-  
-  // FIX 1: Point strictly to the server root, not the uploads folder
-
-  // FIX 2: A helper function to build the correct URL no matter what the database says
+  // ✅ FIX 1: Robust Image URL Helper
   const getImageUrl = (imagePath) => {
     if (!imagePath) return "https://via.placeholder.com/150?text=No+Image";
-    
-    // If it's already a full link (e.g., from the internet), use it
+    // If it's a full web link, use it
     if (imagePath.startsWith("http")) return imagePath;
-
-    // If the path from DB starts with "/", just add the server URL
-    // Example: "/uploads/myimage.jpg" -> "http://localhost:8080/uploads/myimage.jpg"
-    if (imagePath.startsWith("/")) return `${API_BASE_URL}${imagePath}`;
-
-    // Otherwise, assume it needs the uploads folder
-    return `${API_BASE_URL}/uploads/${imagePath}`;
+    // If it's a relative path, combine it with the Backend URL
+    // We strip the leading slash to prevent double slashes
+    const cleanPath = imagePath.startsWith("/") ? imagePath.substring(1) : imagePath;
+    return `${API_BASE_URL}/uploads/${cleanPath}`;
   };
 
   const fetchProducts = async () => {
     setLoading(true);
     try {
       const typeFilter = isSecondHand ? "second-hand" : "new";
-      let endpoint = `/api/products?type=${typeFilter}`;
+      
+      // ✅ FIX 2: REMOVE "/api" from here! 
+      // The apiFetch helper in api.js already adds it.
+      // Was: `/api/products?type=...`  ->  Now: `/products?type=...`
+      let endpoint = `/products?type=${typeFilter}`;
+      
       if (category) endpoint += `&category=${category}`;
       if (search) endpoint += `&search=${search}`;
 
+      console.log("Fetching from:", endpoint); // Debug log
+
       const data = await apiFetch(endpoint);
 
-      
-      setProducts(data);
+      // Safety check: ensure data is an array before setting it
+      if (Array.isArray(data)) {
+        setProducts(data);
+      } else {
+        console.error("Data format error: Expected array, got", data);
+        setProducts([]);
+      }
     } catch (error) {
       console.error("❌ Failed to load products", error);
     } finally {
@@ -113,7 +117,6 @@ export default function Products() {
                   {/* Image Container */}
                   <div className="h-40 w-full overflow-hidden rounded-lg mb-3 bg-gray-100">
                     <img
-                      // FIX 3: Use the helper function here
                       src={getImageUrl(p.image)}
                       alt={p.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
@@ -137,6 +140,9 @@ export default function Products() {
         </>
       )}
 
+      {/* ✅ FIX 3: Ensure selectedProduct exists before rendering Modal.
+         If OrderModal has issues, it's likely because it also has a path error inside it.
+      */}
       {selectedProduct && (
         <OrderModal
           product={selectedProduct}
