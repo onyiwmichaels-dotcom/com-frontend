@@ -2,17 +2,30 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Search, Menu, X, ShoppingBag, Zap, Flame,
-  Heart, Tv, Shirt, Home as HomeIcon, BookOpen,
+  Tv, Shirt, Home as HomeIcon, BookOpen,
   Phone, Instagram
 } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 
-// ✅ 1. Define the High-Quality Images here
+// ✅ UPDATED BANNER IMAGES (High Quality Aesthetic)
 const BANNER_IMAGES = [
-  "https://images.unsplash.com/photo-1696446701796-da61225697cc?q=80&w=2070&auto=format&fit=crop", // iPhone 16 Titanium Style
-  "https://images.unsplash.com/photo-1629249726244-672a0f670fb6?q=80&w=2070&auto=format&fit=crop", // JBL PartyBox Style
-  "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2012&auto=format&fit=crop", // Balenciaga/Fashion
-  "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?q=80&w=2070&auto=format&fit=crop", // Samsung TV Setup
+  // 1. iPhone 15/16 Pro (Titanium Finish)
+  "https://images.unsplash.com/photo-1695048133142-1a20484d2569?q=80&w=2070&auto=format&fit=crop", 
+  
+  // 2. Academic: T-Square & Architectural Tools
+  "https://images.unsplash.com/photo-1581093588402-4857479d2f71?q=80&w=2070&auto=format&fit=crop",
+
+  // 3. JBL PartyBox / Speaker Vibe
+  "https://images.unsplash.com/photo-1629249726244-672a0f670fb6?q=80&w=2070&auto=format&fit=crop",
+
+  // 4. Academic: Aesthetic Stack of Books (Counter Books Vibe)
+  "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=2070&auto=format&fit=crop",
+
+  // 5. Fashion / Balenciaga Shoes Vibe
+  "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2012&auto=format&fit=crop", 
+  
+  // 6. Samsung TV / Entertainment Setup
+  "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?q=80&w=2070&auto=format&fit=crop", 
 ];
 
 export default function Home() {
@@ -21,7 +34,7 @@ export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   
-  // ✅ 2. State for the slideshow
+  // State for the slideshow
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const navigate = useNavigate();
@@ -31,7 +44,7 @@ export default function Home() {
     setUser(storedUser);
   }, []);
 
-  // ✅ 3. Effect to cycle images every 4 seconds
+  // Effect to cycle images every 4 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % BANNER_IMAGES.length);
@@ -115,7 +128,7 @@ export default function Home() {
       <div className="px-5 mb-6">
         <div className="relative w-full h-40 md:h-56 rounded-2xl overflow-hidden bg-black video-container-glow border border-green-900/30 shadow-lg group">
           
-          {/* 4. Map through images and fade them in/out based on index */}
+          {/* Map through images and fade them in/out based on index */}
           {BANNER_IMAGES.map((img, index) => (
             <div
               key={index}
@@ -138,7 +151,6 @@ export default function Home() {
             <h2 className="text-white text-2xl font-bold tracking-tighter animate-neon drop-shadow-lg">
               COM PREMIUM
             </h2>
-            {/* Removed the list of names as requested */}
             <div className="h-1 w-12 bg-green-500 mt-2 rounded-full"></div>
           </div>
         </div>
@@ -198,6 +210,7 @@ export default function Home() {
                 onClick={() => navigate("/shop")}
                 className="bg-white p-3 rounded-2xl shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition active:scale-95"
               >
+                {/* Product Image - Removed Heart Icon */}
                 <div className="h-36 w-full overflow-hidden rounded-xl mb-3 bg-gray-50 relative">
                   <img 
                     src={p.displayImage} 
@@ -205,10 +218,9 @@ export default function Home() {
                     className="w-full h-full object-cover" 
                     onError={(e) => { e.target.src = 'https://via.placeholder.com/150?text=No+Image'; }}
                   />
-                  <button className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded-full shadow-sm text-gray-400 hover:text-red-500 transition">
-                    <Heart size={14} />
-                  </button>
                 </div>
+                
+                {/* Product Info */}
                 <h3 className="font-bold text-gray-800 text-sm truncate uppercase tracking-tight">{p.name}</h3>
                 <p className="text-green-600 font-bold text-sm mt-1">KES {p.price}</p>
               </div>
