@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { X, CheckCircle } from "lucide-react";
 // ✅ Import our API tools
-import { API_BASE_URL, apiPost } from "../config/api"; 
+import { API_BASE_URL, apiPost } from "../../config/api"; 
 
 export default function OrderModal({ product, onClose }) {
     const [details, setDetails] = useState({
