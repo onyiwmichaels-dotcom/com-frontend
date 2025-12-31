@@ -8,7 +8,44 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+/* Neon Flash Animation for the Video Text */
+@keyframes neon-flash {
+  0%, 100% {
+    text-shadow: 0 0 5px #fff, 0 0 10px #22c55e, 0 0 20px #22c55e;
+    color: #fff;
+  }
+  50% {
+    text-shadow: none;
+    color: #cbd5e1; /* Subtle fade */
+  }
+}
 
+/* Breathing Glow for the Video Container */
+@keyframes border-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
+  }
+}
+
+.animate-neon {
+  animation: neon-flash 1.5s infinite;
+}
+
+.video-container-glow {
+  animation: border-glow 3s infinite;
+}
+
+/* Custom scrollbar for categories */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 
 
