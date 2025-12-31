@@ -46,6 +46,28 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+/* 🌊 Gradient Wave Motion Text */
+.wave-text {
+  background: linear-gradient(
+    90deg,
+    #22c55e,
+    #06b6d4,
+    #a855f7,
+    #ec4899,
+    #f97316,
+    #22c55e
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientWave 4s ease-in-out infinite;
+}
+
+@keyframes gradientWave {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
 
 
