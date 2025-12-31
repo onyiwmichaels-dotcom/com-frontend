@@ -11,9 +11,9 @@ import { API_BASE_URL } from "../config/api";
 const BANNER_IMAGES = [
   // 1. iPhone 15/16 Pro (Titanium Finish)
   "https://images.unsplash.com/photo-1695048133142-1a20484d2569?q=80&w=2070&auto=format&fit=crop", 
+  // 2. LG Smart Refrigerator (Modern Kitchen Vibe)
+  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop",
   
-  // 2. Academic: T-Square & Architectural Tools
-  "https://images.unsplash.com/photo-1581093588402-4857479d2f71?q=80&w=2070&auto=format&fit=crop",
 
   // 3. JBL PartyBox / Speaker Vibe
   "https://images.unsplash.com/photo-1629249726244-672a0f670fb6?q=80&w=2070&auto=format&fit=crop",
@@ -149,7 +149,7 @@ export default function Home() {
           {/* Text Overlay (Stays on top) */}
           <div className="absolute inset-0 flex flex-col justify-end p-5 z-10">
             <h2 className="text-white text-2xl font-bold tracking-tighter animate-neon drop-shadow-lg">
-              COM PREMIUM
+              Discover Premium Deals on and off Campus
             </h2>
             <div className="h-1 w-12 bg-green-500 mt-2 rounded-full"></div>
           </div>
