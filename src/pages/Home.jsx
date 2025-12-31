@@ -7,16 +7,37 @@ import {
 } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 
+// ✅ 1. Define the High-Quality Images here
+const BANNER_IMAGES = [
+  "https://images.unsplash.com/photo-1696446701796-da61225697cc?q=80&w=2070&auto=format&fit=crop", // iPhone 16 Titanium Style
+  "https://images.unsplash.com/photo-1629249726244-672a0f670fb6?q=80&w=2070&auto=format&fit=crop", // JBL PartyBox Style
+  "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2012&auto=format&fit=crop", // Balenciaga/Fashion
+  "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?q=80&w=2070&auto=format&fit=crop", // Samsung TV Setup
+];
+
 export default function Home() {
   const [user, setUser] = useState(null);
   const [search, setSearch] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [featuredProducts, setFeaturedProducts] = useState([]);
+  
+  // ✅ 2. State for the slideshow
+  const [currentSlide, setCurrentSlide] = useState(0);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("comUser"));
     setUser(storedUser);
+  }, []);
+
+  // ✅ 3. Effect to cycle images every 4 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % BANNER_IMAGES.length);
+    }, 4000); 
+
+    return () => clearInterval(interval);
   }, []);
 
   // FETCH LATEST 4 PRODUCTS
@@ -37,7 +58,7 @@ export default function Home() {
       .catch(err => console.error("Failed to load products", err));
   }, []);
 
-  // ✅ CATEGORY STRINGS: Matches database logic for filtering
+  // CATEGORY STRINGS
   const categories = [
     { name: "TVS & AUDIO", icon: <Tv size={20} />, Value: "TVs & Audio" }, 
     { name: "FASHION", icon: <Shirt size={20} />, Value: "Fashion" },
@@ -90,27 +111,35 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ✅ AESTHETIC VIDEO BANNER (Neon Updates Included) */}
+      {/* ✅ AESTHETIC CROSS-FADE BANNER */}
       <div className="px-5 mb-6">
-        <div className="relative w-full h-40 md:h-56 rounded-2xl overflow-hidden bg-black video-container-glow border border-green-900/30 shadow-lg">
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-            className="w-full h-full object-cover opacity-70"
-          >
-            {/* High-quality tech placeholder video */}
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-animation-of-futuristic-devices-99786-preview.mp4" type="video/mp4" />
-          </video>
+        <div className="relative w-full h-40 md:h-56 rounded-2xl overflow-hidden bg-black video-container-glow border border-green-900/30 shadow-lg group">
           
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex flex-col justify-end p-5">
-            <h2 className="text-white text-xl font-bold tracking-tighter animate-neon">
+          {/* 4. Map through images and fade them in/out based on index */}
+          {BANNER_IMAGES.map((img, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 w-full h-full transition-opacity duration-[1500ms] ease-in-out ${
+                index === currentSlide ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <img 
+                src={img} 
+                alt="Premium Product" 
+                className="w-full h-full object-cover opacity-80"
+              />
+              {/* Dark Overlay for text readability */}
+              <div className="absolute inset-0 bg-black/40"></div>
+            </div>
+          ))}
+          
+          {/* Text Overlay (Stays on top) */}
+          <div className="absolute inset-0 flex flex-col justify-end p-5 z-10">
+            <h2 className="text-white text-2xl font-bold tracking-tighter animate-neon drop-shadow-lg">
               COM PREMIUM
             </h2>
-            <p className="text-green-400 text-[10px] font-black uppercase tracking-[0.2em] opacity-90">
-              iPhone 15 Pro • S24 Ultra • JBL Partybox
-            </p>
+            {/* Removed the list of names as requested */}
+            <div className="h-1 w-12 bg-green-500 mt-2 rounded-full"></div>
           </div>
         </div>
       </div>
