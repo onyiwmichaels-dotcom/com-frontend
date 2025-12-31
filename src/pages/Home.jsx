@@ -15,8 +15,6 @@ const BANNER_IMAGES = [
   "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop",
   
 
-  // 3. Sony WH-1000XM5 Headphones (Sleek Audio Gear)
-  "https://images.unsplash.com/photo-1518441902111-3f1a3f6d7f6f?q=80&w=2070&auto=format&fit=crop",
 
   // 4. Academic: Aesthetic Stack of Books (Counter Books Vibe)
   "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=2070&auto=format&fit=crop",
@@ -96,18 +94,27 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50 text-gray-900 font-sans" style={{ fontFamily: 'Oswald, sans-serif' }}>
 
       {/* HEADER */}
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm px-5 py-4 flex justify-between items-center">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
-          <div className="bg-green-600 text-white p-1.5 rounded-lg shadow-sm">
-            <ShoppingBag size={20} />
-          </div>
-          <span className="text-xl font-bold tracking-tight">COM</span>
-        </div>
+     
+<header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm px-5 py-6 flex items-center relative">
+  
+  {/* GRAFFITI TEXT */}
+  <div className="absolute left-1/2 -translate-x-1/2 text-center">
+    <h1 className="text-xl md:text-2xl font-extrabold tracking-wide text-green-500 
+      drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]
+      font-[cursive]">
+      buy / sell products today with us
+    </h1>
+  </div>
 
-        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 rounded-full hover:bg-gray-100 transition">
-          {isMenuOpen ? <X size={26} /> : <Menu size={26} />}
-        </button>
-      </header>
+  {/* MENU BUTTON (RIGHT SIDE) */}
+  <button
+    onClick={() => setIsMenuOpen(!isMenuOpen)}
+    className="ml-auto p-2 rounded-full hover:bg-gray-100 transition"
+  >
+    {isMenuOpen ? <X size={26} /> : <Menu size={26} />}
+  </button>
+</header>
+
 
       {/* SEARCH BAR */}
       <div className="px-5 mt-6 mb-4 relative">
