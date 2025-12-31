@@ -15,8 +15,8 @@ const BANNER_IMAGES = [
   "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop",
   
 
-  // 3. JBL PartyBox / Speaker Vibe
-  "https://images.unsplash.com/photo-1629249726244-672a0f670fb6?q=80&w=2070&auto=format&fit=crop",
+  // 3. Sony WH-1000XM5 Headphones (Sleek Audio Gear)
+  "https://images.unsplash.com/photo-1518441902111-3f1a3f6d7f6f?q=80&w=2070&auto=format&fit=crop",
 
   // 4. Academic: Aesthetic Stack of Books (Counter Books Vibe)
   "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=2070&auto=format&fit=crop",
