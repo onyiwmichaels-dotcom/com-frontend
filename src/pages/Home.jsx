@@ -39,15 +39,16 @@ export default function Home() {
 
   // ✅ CATEGORY STRINGS: Matches database logic for filtering
   const categories = [
-    { name: "TVS & AUDIO", icon: <Tv size={20} />, sub: "electronics" }, 
-    { name: "FASHION", icon: <Shirt size={20} />, sub: "fashion" },
-    { name: "HOME ITEMS", icon: <HomeIcon size={20} />, sub: "home" },
-    { name: "ACADEMIC", icon: <BookOpen size={20} />, sub: "academic" },
-    { name: "APPLIANCES", icon: <Zap size={20} />, sub: "appliances" },
+    { name: "TVS & AUDIO", icon: <Tv size={20} />, Value: "TVs & Audio" }, 
+    { name: "FASHION", icon: <Shirt size={20} />, Value: "Fashion" },
+    { name: "HOME ITEMS", icon: <HomeIcon size={20} />, Value: "Home" },
+    { name: "ACADEMICS", icon: <BookOpen size={20} />, Value: "Academics" },
+    { name: "APPLIANCES", icon: <Zap size={20} />, Value: "Appliances" },
+    { name: "PHONES", icon: <Phone size={20} />, Value: "Phones" },
   ];
 
-  const goToCategory = (sub) => {
-    navigate(`/shop?cat=${sub}`);
+  const goToCategory = (category) => {
+    navigate(`/shop?cat=${encodeURIComponent(category)}`);
     setIsMenuOpen(false);
   };
 
@@ -135,7 +136,7 @@ export default function Home() {
           {categories.map((cat) => (
             <div 
               key={cat.name}
-              onClick={() => goToCategory(cat.sub)}
+              onClick={() => goToCategory(cat.Value)}
               className="flex flex-col items-center gap-2 min-w-[85px] cursor-pointer group"
             >
               <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center text-green-600 group-hover:bg-green-600 group-hover:text-white border border-gray-100 transition-all duration-300 transform group-active:scale-90">
