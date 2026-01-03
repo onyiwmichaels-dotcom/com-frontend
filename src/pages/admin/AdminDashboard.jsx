@@ -259,7 +259,7 @@ export default function AdminDashboard() {
                                         <div className="flex items-center text-sm text-gray-700 mt-2 p-2 bg-gray-50 rounded-lg">
                                             <Phone size={14} className="text-blue-500 mr-2" />
                                             <span>
-                                                Seller: {p.type === 'second-hand' ? p.sellerPhone : 'Admin'}
+                                                Seller: {p.type === 'second-hand' ? p.sellerphone : 'Admin'}
                                                 </span>
                                         </div>
                                         <div className="flex gap-3 mt-4 pt-4 border-t">
