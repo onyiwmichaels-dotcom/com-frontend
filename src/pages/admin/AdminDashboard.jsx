@@ -288,6 +288,7 @@ export default function AdminDashboard() {
                                         <th className="p-4">Product</th>
                                         <th className="p-4">Date</th>
                                         <th className="p-4">location</th>
+                                        <th className="p-4">price</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -298,6 +299,7 @@ export default function AdminDashboard() {
                                             <td className="p-4">{o.productname}</td>
                                             <td className="p-4 text-xs">{formatDate(o.date)}</td>
                                             <td className="p-4">{o.location}</td>
+                                            <td className="p-4">{o.productprice}</td>
                                         </tr>
                                     ))}
                                 </tbody>
