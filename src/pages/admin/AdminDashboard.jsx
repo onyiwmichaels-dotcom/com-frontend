@@ -287,15 +287,17 @@ export default function AdminDashboard() {
                                         <th className="p-4">Phone</th>
                                         <th className="p-4">Product</th>
                                         <th className="p-4">Date</th>
+                                        <th className="p-4">location</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {orders.map((o) => (
                                         <tr key={o.id} className="border-b hover:bg-green-50">
-                                            <td className="p-4 font-semibold">{o.customerName}</td>
+                                            <td className="p-4 font-semibold">{o.customername}</td>
                                             <td className="p-4 text-green-700">{o.phone}</td>
-                                            <td className="p-4">{o.productName}</td>
+                                            <td className="p-4">{o.productname}</td>
                                             <td className="p-4 text-xs">{formatDate(o.date)}</td>
+                                            <td className="p-4">{o.location}</td>
                                         </tr>
                                     ))}
                                 </tbody>
