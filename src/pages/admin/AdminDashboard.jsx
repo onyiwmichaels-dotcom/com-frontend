@@ -248,9 +248,19 @@ export default function AdminDashboard() {
                                             </span>
                                         </div>
                                         <p className="font-extrabold mt-3 text-2xl text-green-700">KES {p.price}</p>
+                                        {activeTab === 'inbox' && (
+        <div className="mt-3 text-sm text-gray-700 space-y-1 bg-gray-50 p-3 rounded-lg">
+        <p><strong>Category:</strong> {p.category}</p>
+        <p><strong>Pickup Location:</strong> {p.location}</p>
+        <p className="text-gray-600"><strong>Description:</strong> {p.description}</p>
+    </div>
+)}
+
                                         <div className="flex items-center text-sm text-gray-700 mt-2 p-2 bg-gray-50 rounded-lg">
                                             <Phone size={14} className="text-blue-500 mr-2" />
-                                            <span>Seller: {p.sellerPhone || 'Admin'}</span>
+                                            <span>
+                                                Seller: {p.type === 'second-hand' ? p.sellerPhone : 'Admin'}
+                                                </span>
                                         </div>
                                         <div className="flex gap-3 mt-4 pt-4 border-t">
                                             {activeTab === 'inbox' ? (
