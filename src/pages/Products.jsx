@@ -22,21 +22,7 @@ export default function Products() {
   const pageTitle = isSecondHand ? "Second-Hand Items" : "New Products";
   
   // ✅ FIX 2: Smart Image URL Builder (Prevents double "uploads/uploads")
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) return "https://via.placeholder.com/150?text=No+Image";
-    if (imagePath.startsWith("http")) return imagePath;
-
-    // Remove leading slash for consistency
-    let cleanPath = imagePath.startsWith("/") ? imagePath.substring(1) : imagePath;
-
-    // If the DB path ALREADY has "uploads/", just add the base URL
-    if (cleanPath.startsWith("uploads/")) {
-      return `${API_BASE_URL}/${cleanPath}`;
-    }
-
-    // Otherwise, add the uploads folder
-    return `${API_BASE_URL}/uploads/${cleanPath}`;
-  };
+  
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -120,18 +106,18 @@ export default function Products() {
                   className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:shadow-lg hover:border-green-300 transition group"
                 >
                   {/* Image Container */}
-                  <div className="h-40 w-full overflow-hidden rounded-lg mb-3 bg-gray-100 relative">
-                     <img
-                      src={getImageUrl(p.image)}
-                      alt={p.name}
-                      loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                      onError={(e) => { 
-                        // Fallback if image fails
-                        e.target.onerror = null; 
-                        e.target.src = 'https://via.placeholder.com/150?text=No+Image'; 
-                      }}
-                    />
+                 <div className="h-40 w-full overflow-hidden rounded-lg mb-3 bg-gray-100 relative">
+<img
+  src={p.image || "https://via.placeholder.com/150?text=No+Image"}
+  alt={p.name}
+  loading="lazy"
+  className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = "https://via.placeholder.com/150?text=No+Image";
+  }}
+/>
+
                   </div>
                   
                   <h2 className="font-semibold text-lg text-gray-800 leading-tight mb-1">

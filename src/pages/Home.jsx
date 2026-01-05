@@ -67,22 +67,21 @@ export default function Home() {
     }, []);
 
   // FETCH FEATURED PRODUCTS
-  useEffect(() => {
-    fetch(`${API_BASE_URL}/api/products/latest`)
-      .then(res => res.json())
-      .then(data => {
-        const formatted = data
-          .slice(0, 4)
-          .map(p => ({
-            ...p,
-            displayImage: p.image?.startsWith('http') 
-              ? p.image 
-              : `${API_BASE_URL}${p.image?.startsWith('/') ? '' : '/'}${p.image}`
-          }));
-        setFeaturedProducts(formatted);
-      })
-      .catch(err => console.error("Failed to load products", err));
-  }, []);
+   
+    useEffect(() => {
+  fetch(`${API_BASE_URL}/api/products/latest`)
+    .then(res => res.json())
+    .then(data => {
+      const formatted = data.slice(0, 4).map(p => ({
+        ...p,
+        displayImage: p.image || "https://via.placeholder.com/300?text=No+Image"
+      }));
+
+      setFeaturedProducts(formatted);
+    })
+    .catch(err => console.error("Failed to load products", err));
+}, []);
+
 
   // CATEGORY STRINGS
   const categories = [

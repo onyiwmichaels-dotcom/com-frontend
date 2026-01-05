@@ -15,13 +15,7 @@ export default function OrderModal({ product, onClose }) {
     if (!product) return null;
 
     // ✅ Image Helper (Same logic as Products.jsx)
-    const getImageUrl = (imagePath) => {
-        if (!imagePath) return "https://via.placeholder.com/150?text=No+Image";
-        if (imagePath.startsWith("http")) return imagePath;
-        let cleanPath = imagePath.startsWith("/") ? imagePath.substring(1) : imagePath;
-        if (cleanPath.startsWith("uploads/")) return `${API_BASE_URL}/${cleanPath}`;
-        return `${API_BASE_URL}/uploads/${cleanPath}`;
-    };
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -67,11 +61,15 @@ export default function OrderModal({ product, onClose }) {
                     <h3 className="text-gray-500 text-sm font-bold tracking-wider mb-2 uppercase">Selected Item</h3>
                     
                     <img 
-                        src={getImageUrl(product.image)} 
-                        alt={product.name} 
-                        className="w-full h-48 object-cover rounded-lg shadow-md mb-4 bg-white"
-                        onError={(e) => { e.target.src = 'https://via.placeholder.com/150?text=No+Image'; }}
-                    />
+    src={product.image || "https://via.placeholder.com/150?text=No+Image"} 
+    alt={product.name} 
+    className="w-full h-48 object-cover rounded-lg shadow-md mb-4 bg-white"
+    onError={(e) => {
+        e.target.onerror = null;
+        e.target.src = "https://via.placeholder.com/150?text=No+Image";
+    }}
+/>
+
                     
                     <h2 className="text-2xl font-bold text-gray-800 leading-tight" style={{ fontFamily: 'Oswald, sans-serif' }}>
                         {product.name}
