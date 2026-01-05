@@ -113,7 +113,7 @@ export default function OrderModal({ product, onClose }) {
                                         required
                                         type="text"
                                         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none transition"
-                                        placeholder="John Ochieng"
+                                        placeholder="John Doe"
                                         value={details.name}
                                         onChange={(e) => setDetails({...details, name: e.target.value})}
                                     />

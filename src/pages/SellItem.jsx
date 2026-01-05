@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { 
   UploadCloud, CheckCircle, XCircle, Tag, MapPin, DollarSign, Type, Image as ImageIcon, Phone 
 } from "lucide-react";
-import { apiFetch, API_BASE_URL } from "../config/api";
+import { apiFetch } from "../config/api";
 
 export default function SellItem() {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export default function SellItem() {
   const categories = ["TVs & Audio", "Appliances", "Fashion", "Academics", "Phones", "Home", "Other"];
 
   // --------------------------------------------------
-  // IMAGE → BASE64 (SUPABASE READY)
+  // IMAGE → BASE64
   // --------------------------------------------------
   const fileToBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -42,13 +42,9 @@ export default function SellItem() {
 
     try {
       setUploadStatus({ status: "loading", message: "Processing image..." });
-
       const base64 = await fileToBase64(file);
-
       setForm(prev => ({ ...prev, image: base64 }));
-
       setUploadStatus({ status: "success", message: "Image ready for upload ✅" });
-
     } catch (err) {
       console.error("Image processing error:", err);
       setUploadStatus({ status: "error", message: "Failed to process image ❌" });
@@ -60,7 +56,7 @@ export default function SellItem() {
   };
 
   // --------------------------------------------------
-  // SUBMIT PRODUCT (UNCHANGED)
+  // SUBMIT PRODUCT
   // --------------------------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,9 +83,11 @@ export default function SellItem() {
         body: JSON.stringify(payload)
       });
 
-      setUploadStatus({ status: "success", message: "Item submitted for approval! 🚀 Redirecting..." });
+      // ✅ 1. Set Success Status
+      setUploadStatus({ status: "submitted", message: "Item posted successfully! Waiting for admin approval... ⏳" });
 
-      setTimeout(() => navigate("/"), 2500);
+      // ✅ 2. Redirect after delay
+      setTimeout(() => navigate("/"), 3000);
 
     } catch (err) {
       console.error("Submission error:", err);
@@ -101,16 +99,14 @@ export default function SellItem() {
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4" style={{ fontFamily: 'Oswald, sans-serif' }}>
       <div className="max-w-2xl mx-auto">
+        
+        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-green-800 tracking-wide uppercase mb-2">Sell Your Stuff 🚀</h1>
           <p className="text-gray-500">Turn your items into cash. Fast & Easy.</p>
         </div>
-        {uploadStatus.status==="success" && (
-            <div className="mb-6 p-4 rounded-xl bg-green-100 text-green-800 font-bold text-center shadow-sm">
-                item posted successfully!waiting for admin approval...
-                </div>
-                )}
 
+        {/* Form */}
         <form onSubmit={handleSubmit} className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100 space-y-6">
 
           {/* Image Upload */}
@@ -141,20 +137,18 @@ export default function SellItem() {
                 </div>
               )}
             </div>
-
-            {uploadStatus.message && (
-              <div className={`p-3 rounded-xl text-sm font-medium flex items-center gap-2 ${
-                uploadStatus.status === "success" ? "bg-green-100 text-green-700" :
-                uploadStatus.status === "error" ? "bg-red-100 text-red-700" : "bg-blue-100 text-blue-700"
-              }`}>
-                {uploadStatus.status === "success" && <CheckCircle size={16} />}
-                {uploadStatus.status === "error" && <XCircle size={16} />}
-                {uploadStatus.message}
-              </div>
+            
+            {/* Image processing status messages */}
+            {(uploadStatus.status === "loading" || uploadStatus.status === "error") && (
+               <div className={`p-3 rounded-xl text-sm font-medium flex items-center gap-2 ${
+                 uploadStatus.status === "error" ? "bg-red-100 text-red-700" : "bg-blue-100 text-blue-700"
+               }`}>
+                 {uploadStatus.status === "error" && <XCircle size={16} />}
+                 {uploadStatus.message}
+               </div>
             )}
           </div>
 
-          {/* EVERYTHING BELOW IS UNCHANGED */}
           {/* Name & Price */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -208,12 +202,22 @@ export default function SellItem() {
               className="w-full bg-gray-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-green-500 transition font-medium text-gray-800 resize-none" />
           </div>
 
-          {/* Submit */}
-          <button type="submit" disabled={isSubmitting}
+          {/* Submit Button */}
+          <button type="submit" disabled={isSubmitting || uploadStatus.status === "submitted"}
             className="w-full bg-green-700 hover:bg-green-800 text-white py-4 rounded-2xl text-xl font-bold shadow-lg shadow-green-200 transition transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed">
             {isSubmitting ? "Posting..." : "Post Item 🚀"}
           </button>
+
         </form>
+
+        {/* ✅ SUCCESS MESSAGE MOVED BELOW FORM */}
+        {uploadStatus.status === "submitted" && (
+          <div className="mt-6 p-5 rounded-2xl bg-green-100 border border-green-200 text-green-800 font-bold text-center shadow-lg animate-fade-in flex flex-col items-center gap-2">
+            <CheckCircle size={32} className="text-green-600" />
+            <span>Item posted successfully! Waiting for admin approval...</span>
+          </div>
+        )}
+
       </div>
     </div>
   );
