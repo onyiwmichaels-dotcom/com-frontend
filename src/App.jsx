@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import Navbar from "./components/Navbar";
 
 import Entry from "./pages/Entry";
@@ -36,6 +37,8 @@ function App() {
 
         <Route path="/support" element={<Support />} />
       </Routes>
+
+      <Analytics />
     </div>
   );
 }
