@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 import { use } from "react";
+import { Link } from "react-router-dom";
 
 // ✅ UPDATED BANNER IMAGES (High Quality Aesthetic)
 const BANNER_IMAGES = [
@@ -266,17 +267,39 @@ export default function Home() {
             <span className="font-bold">0737 107 602</span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Instagram size={18} className="text-pink-500" />
-            <span className="font-bold">@COM_KE</span>
-          </div>
-           <div className="flex flex-col items-center gap-3 mt-6">
+          <div className="mt-6 flex flex-col items-center gap-3">
+  <p className="text-sm font-semibold text-gray-300">
+    Support
+  </p>
+
   <a
-    href="/terms"
+    href="https://wa.me/254737107602?text=Hello%20I%20need%20support%20from%20your%20marketplace"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center gap-2 text-green-500 font-semibold hover:text-green-400 transition"
+  >
+    {/* WhatsApp Icon */}
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 32 32"
+      width="20"
+      height="20"
+      fill="currentColor"
+    >
+      <path d="M16.001 3.2c-7.075 0-12.8 5.723-12.8 12.797 0 2.25.589 4.447 1.706 6.39L3.2 28.8l6.59-1.728a12.75 12.75 0 0 0 6.211 1.603h.002c7.073 0 12.797-5.723 12.797-12.797S23.074 3.2 16.001 3.2zm0 23.277a10.43 10.43 0 0 1-5.325-1.46l-.381-.226-3.91 1.026 1.043-3.812-.247-.392a10.397 10.397 0 0 1-1.59-5.555c0-5.765 4.693-10.456 10.46-10.456 5.764 0 10.456 4.691 10.456 10.456 0 5.764-4.692 10.456-10.456 10.456zm5.732-7.86c-.313-.156-1.85-.912-2.137-1.016-.286-.104-.494-.156-.703.156-.209.313-.809 1.016-.992 1.225-.182.209-.365.235-.677.078-.313-.156-1.32-.486-2.515-1.55-.93-.829-1.558-1.853-1.74-2.166-.182-.313-.02-.481.137-.637.14-.139.313-.365.469-.547.156-.182.209-.313.313-.521.104-.209.052-.391-.026-.547-.078-.156-.703-1.69-.964-2.314-.254-.61-.513-.527-.703-.537-.182-.01-.391-.013-.6-.013s-.547.078-.833.391c-.287.313-1.096 1.07-1.096 2.609 0 1.539 1.122 3.027 1.278 3.235.156.209 2.209 3.377 5.35 4.733.747.323 1.33.516 1.784.66.75.238 1.432.204 1.971.124.602-.089 1.85-.756 2.113-1.486.261-.73.261-1.356.182-1.486-.078-.13-.286-.209-.6-.365z" />
+    </svg>
+
+    <span>Chat with us on WhatsApp</span>
+  </a>
+</div>
+
+           <div className="flex flex-col items-center gap-3 mt-6">
+  <Link
+    to="/terms"
     className="text-sm font-semibold text-green-500 hover:text-green-400 underline transition"
   >
     Terms & Conditions
-  </a>
+  </Link>
 </div>
 
 
