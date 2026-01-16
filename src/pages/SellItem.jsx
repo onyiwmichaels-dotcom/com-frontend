@@ -87,7 +87,7 @@ export default function SellItem() {
       setUploadStatus({ status: "submitted", message: "Item posted successfully! Waiting for admin approval... ⏳" });
 
       // ✅ 2. Redirect after delay
-      setTimeout(() => navigate("/"), 3000);
+      setTimeout(() => navigate("/"), 5000);
 
     } catch (err) {
       console.error("Submission error:", err);
