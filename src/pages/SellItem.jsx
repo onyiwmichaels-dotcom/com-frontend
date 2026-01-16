@@ -4,6 +4,7 @@ import {
   UploadCloud, CheckCircle, XCircle, Tag, MapPin, DollarSign, Type, Image as ImageIcon, Phone 
 } from "lucide-react";
 import { apiFetch } from "../config/api";
+import { Link } from "react-router-dom";
 
 export default function SellItem() {
   const navigate = useNavigate();
@@ -205,9 +206,9 @@ export default function SellItem() {
  
 <p className="text-xs text-gray-500 text-center">
   By posting an item, you agree to our{" "}
-  <a href="/terms" className="text-green-700 underline font-semibold">
+  <Link to="/terms" className="text-green-700 underline font-semibold">
     Terms & Conditions
-  </a>
+  </Link>
 </p>
 
 
