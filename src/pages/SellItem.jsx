@@ -200,7 +200,17 @@ export default function SellItem() {
             <label className="font-bold text-gray-700 mb-2 block">Description</label>
             <textarea name="description" value={form.description} onChange={handleChange} rows={3}
               className="w-full bg-gray-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-green-500 transition font-medium text-gray-800 resize-none" />
-          </div>
+          </div>  
+
+ 
+<p className="text-xs text-gray-500 text-center">
+  By posting an item, you agree to our{" "}
+  <a href="/terms" className="text-green-700 underline font-semibold">
+    Terms & Conditions
+  </a>
+</p>
+
+
           {uploadStatus.status === "submitted" && (
   <div className="p-4 rounded-xl bg-green-100 text-green-800 font-bold text-center flex items-center justify-center gap-2">
     <CheckCircle size={20} />

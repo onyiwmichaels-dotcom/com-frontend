@@ -11,6 +11,7 @@ import SellItem from "./pages/SellItem";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Support from "./pages/Support";
+import Terms from "./pages/Terms";
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
         {/* ADMIN ROUTES */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
+        <Route path="/terms" element={<Terms />} />
 
         <Route path="/support" element={<Support />} />
       </Routes>

@@ -270,8 +270,17 @@ export default function Home() {
             <Instagram size={18} className="text-pink-500" />
             <span className="font-bold">@COM_KE</span>
           </div>
+           <div className="flex flex-col items-center gap-3 mt-6">
+  <a
+    href="/terms"
+    className="text-sm font-semibold text-green-500 hover:text-green-400 underline transition"
+  >
+    Terms & Conditions
+  </a>
+</div>
 
-          <p className="text-[10px] text-gray-600 pt-8 font-medium border-t border-gray-800 mt-4 w-full uppercase tracking-tighter">
+
+          <p className="text-sm text-gray-500 pt-8 font-medium border-t border-gray-800 mt-6 w-full uppercase tracking-wide text-center">
             © 2026 Chuka Online Market. All Rights Reserved.
           </p>
         </div>
