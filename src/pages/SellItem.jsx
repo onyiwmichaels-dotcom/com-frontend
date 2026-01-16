@@ -201,6 +201,13 @@ export default function SellItem() {
             <textarea name="description" value={form.description} onChange={handleChange} rows={3}
               className="w-full bg-gray-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-green-500 transition font-medium text-gray-800 resize-none" />
           </div>
+          {uploadStatus.status === "submitted" && (
+  <div className="p-4 rounded-xl bg-green-100 text-green-800 font-bold text-center flex items-center justify-center gap-2">
+    <CheckCircle size={20} />
+    Item posted successfully. Waiting for admin approval.
+  </div>
+)}
+
 
           {/* Submit Button */}
           <button type="submit" disabled={isSubmitting || uploadStatus.status === "submitted"}
