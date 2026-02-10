@@ -1,30 +1,18 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Search, Menu, X, ShoppingBag, Zap, Flame,
   Tv, Shirt, Home as HomeIcon, BookOpen,
-  Phone, Instagram
+  Phone
 } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
-import { use } from "react";
-import { Link } from "react-router-dom";
 
-// ✅ UPDATED BANNER IMAGES (High Quality Aesthetic)
+// ✅ BANNER IMAGES 
 const BANNER_IMAGES = [
-  // 1. iPhone 15/16 Pro (Titanium Finish)
   "https://images.unsplash.com/photo-1695048133142-1a20484d2569?q=80&w=2070&auto=format&fit=crop", 
-  // 2. LG Smart Refrigerator (Modern Kitchen Vibe)
   "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop",
-  
-
-
-  // 4. Academic: Aesthetic Stack of Books (Counter Books Vibe)
   "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=2070&auto=format&fit=crop",
-
-  // 5. Fashion / Balenciaga Shoes Vibe
   "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2012&auto=format&fit=crop", 
-  
-  // 6. Samsung TV / Entertainment Setup
   "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?q=80&w=2070&auto=format&fit=crop", 
 ];
 
@@ -33,58 +21,47 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [featuredProducts, setFeaturedProducts] = useState([]);
-  
-  // State for the slideshow
   const [currentSlide, setCurrentSlide] = useState(0);
-  const fonts = [
-    "'Pacifico, cursive'",
-    "'Monoton, cursive'",
-    "'Bebas Neue, cursive'",
-    "'Oswald, sans-serif'"
-  ];
-   const [fontIndex, setFontIndex] = useState(0);
-   const navigate = useNavigate();
+  const [fontIndex, setFontIndex] = useState(0);
+  const navigate = useNavigate();
+
+  const fonts = ["'Pacifico, cursive'", "'Monoton, cursive'", "'Bebas Neue, cursive'", "'Oswald, sans-serif'"];
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("comUser"));
     setUser(storedUser);
   }, []);
 
-  // Effect to cycle images every 4 seconds
+  // Slideshow Logic
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % BANNER_IMAGES.length);
     }, 4000); 
-
     return () => clearInterval(interval);
   }, []);
 
-   useEffect(() => {
-      const fontInterval = setInterval(() => {
-        setFontIndex(prev => (prev + 1) % fonts.length);
-      }, 1200);
+  // Graffiti Font Logic
+  useEffect(() => {
+    const fontInterval = setInterval(() => {
+      setFontIndex(prev => (prev + 1) % fonts.length);
+    }, 1200);
+    return () => clearInterval(fontInterval);
+  }, []);
 
-      return () => clearInterval(fontInterval);
-    }, []);
+  // Fetch Latest Products
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/products/latest`)
+      .then(res => res.json())
+      .then(data => {
+        const formatted = data.slice(0, 4).map(p => ({
+          ...p,
+          displayImage: p.image || "https://via.placeholder.com/400x400?text=No+Image"
+        }));
+        setFeaturedProducts(formatted);
+      })
+      .catch(err => console.error("Failed to load products", err));
+  }, []);
 
-  // FETCH FEATURED PRODUCTS
-   
-    useEffect(() => {
-  fetch(`${API_BASE_URL}/api/products/latest`)
-    .then(res => res.json())
-    .then(data => {
-      const formatted = data.slice(0, 4).map(p => ({
-        ...p,
-        displayImage: p.image || "https://via.placeholder.com/300?text=No+Image"
-      }));
-
-      setFeaturedProducts(formatted);
-    })
-    .catch(err => console.error("Failed to load products", err));
-}, []);
-
-
-  // CATEGORY STRINGS
   const categories = [
     { name: "TVS & AUDIO", icon: <Tv size={20} />, Value: "TVs & Audio" }, 
     { name: "FASHION", icon: <Shirt size={20} />, Value: "Fashion" },
@@ -106,110 +83,87 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans" style={{ fontFamily: 'Oswald, sans-serif' }}>
+    <div className="min-h-screen bg-[#FDFDFD] text-gray-900 overflow-x-hidden" style={{ fontFamily: 'Oswald, sans-serif' }}>
 
-      {/* HEADER */}
-     
-<header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm px-5 py-6 flex items-center relative">
-  
-  {/* GRAFFITI TEXT */}
-  <div className="absolute left-1/2 -translate-x-1/2 text-center">
-    <h1
-     className="wave-text text-[22px] sm:text-[26px] md:text-[30px] font-extrabold tracking-wide transition-all duration-700"
-      style={{
-         fontFamily: fonts[fontIndex],
-        textShadow: "0 0 18px rgba(34,197,94,0.8)",
-       }}
-    >
-      buy / sell products today with us
-    </h1>
-  </div>
+      {/* --- STICKY HEADER --- */}
+      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-100 px-5 py-5 flex items-center justify-between">
+        <div className="flex-1">
+           {/* Placeholder for left-side spacing if needed */}
+        </div>
+        
+        <div className="text-center">
+          <h1
+            className="wave-text text-[18px] sm:text-[22px] font-black tracking-tight transition-all duration-700 uppercase"
+            style={{ fontFamily: fonts[fontIndex] }}
+          >
+            Chuka Market
+          </h1>
+        </div>
 
-  {/* MENU BUTTON (RIGHT SIDE) */}
-  <button
-    onClick={() => setIsMenuOpen(!isMenuOpen)}
-    className="ml-auto p-2 rounded-full hover:bg-gray-100 transition"
-  >
-    {isMenuOpen ? <X size={26} /> : <Menu size={26} />}
-  </button>
-</header>
+        <div className="flex-1 flex justify-end">
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 bg-gray-50 rounded-full">
+            {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
+      </header>
 
-
-      {/* SEARCH BAR */}
-      <div className="px-5 mt-6 mb-4 relative">
-        <div className="relative flex items-center">
-          <Search className="absolute left-4 text-gray-400" size={18} />
+      {/* --- SEARCH --- */}
+      <div className="px-5 mt-6 mb-4">
+        <div className="relative group">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-green-500 transition-colors" size={18} />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={handleSearch}
-            placeholder="Search products & press Enter..."
-            className="w-full pl-12 pr-4 py-3 rounded-2xl shadow-sm border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all bg-white"
+            placeholder="Search student deals..."
+            className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-100 border-none focus:ring-2 focus:ring-green-500 transition-all text-sm font-medium"
           />
         </div>
       </div>
 
-      {/* ✅ AESTHETIC CROSS-FADE BANNER */}
-      <div className="px-5 mb-6">
-        <div className="relative w-full h-40 md:h-56 rounded-2xl overflow-hidden bg-black video-container-glow border border-green-900/30 shadow-lg group">
-          
-          {/* Map through images and fade them in/out based on index */}
+      {/* --- AESTHETIC BANNER --- */}
+      <div className="px-5 mb-8">
+        <div className="relative w-full h-44 rounded-[2rem] overflow-hidden bg-black video-container-glow shadow-2xl shadow-green-100/20">
           {BANNER_IMAGES.map((img, index) => (
-            <div
+            <img 
               key={index}
-              className={`absolute inset-0 w-full h-full transition-opacity duration-[1500ms] ease-in-out ${
-                index === currentSlide ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              <img 
-                src={img} 
-                alt="Premium Product" 
-                className="w-full h-full object-cover opacity-80"
-              />
-              {/* Dark Overlay for text readability */}
-              <div className="absolute inset-0 bg-black/40"></div>
-            </div>
+              src={img} 
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ${index === currentSlide ? "opacity-60" : "opacity-0"}`}
+            />
           ))}
-          
-          {/* Text Overlay (Stays on top) */}
-          <div className="absolute inset-0 flex flex-col justify-end p-5 z-10">
-            <h2 className="text-white text-2xl font-bold tracking-tighter animate-neon drop-shadow-lg">
-              Discover Premium Deals on and off Campus
+          <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black/80 to-transparent">
+            <h2 className="text-white text-xl font-black uppercase tracking-tighter leading-tight animate-neon">
+              Elevate Your <br/> Campus Lifestyle
             </h2>
-            <div className="h-1 w-12 bg-green-500 mt-2 rounded-full"></div>
           </div>
         </div>
       </div>
 
-      {/* GREETING */}
-      <div className="px-5 mb-6">
-        {user ? (
-          <h1 className="text-2xl font-bold">
-            Yo, <span className="text-green-600">{user.name}</span>!
-          </h1>
-        ) : (
-          <h1 className="text-2xl font-bold">
-            Welcome to <span className="text-green-600">Chuka Market</span>
-          </h1>
-        )}
-        <p className="text-gray-500 text-sm">The plug for best deals on campus.</p>
+      {/* --- GREETING --- */}
+      <div className="px-5 mb-8">
+        <p className="text-[10px] font-black uppercase tracking-[3px] text-green-600 mb-1">Authenticated</p>
+        <h1 className="text-3xl font-black tracking-tighter uppercase leading-none">
+          {user ? <>Yo, {user.name}!</> : <>Welcome Back</>}
+        </h1>
       </div>
 
-      {/* CATEGORIES SECTION */}
-      <div className="px-5 mb-8">
-        <h2 className="text-lg font-bold mb-4 uppercase tracking-tight">Browse Categories</h2>
-        <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar scroll-smooth">
+      {/* --- CATEGORIES --- */}
+      <div className="mb-10">
+        <div className="px-5 flex justify-between items-center mb-4">
+          <h2 className="text-xs font-black uppercase tracking-widest text-gray-400">Department</h2>
+        </div>
+        <div className="flex gap-4 overflow-x-auto px-5 pb-2 no-scrollbar">
           {categories.map((cat) => (
             <div 
               key={cat.name}
               onClick={() => goToCategory(cat.Value)}
-              className="flex flex-col items-center gap-2 min-w-[85px] cursor-pointer group"
+              className="flex flex-col items-center gap-3 min-w-[75px] cursor-pointer group"
             >
-              <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center text-green-600 group-hover:bg-green-600 group-hover:text-white border border-gray-100 transition-all duration-300 transform group-active:scale-90">
+              <div className="w-16 h-16 bg-white rounded-3xl shadow-sm flex items-center justify-center text-gray-400 border border-gray-100 group-hover:bg-black group-hover:text-white group-active:scale-90 transition-all">
                 {cat.icon}
               </div>
-              <span className="text-[10px] font-bold text-gray-600 text-center uppercase tracking-tight">
+              <span className="text-[9px] font-black text-gray-500 uppercase tracking-tighter">
                 {cat.name}
               </span>
             </div>
@@ -217,14 +171,14 @@ export default function Home() {
         </div>
       </div>
 
-      {/* TRENDING SECTION */}
-      <div className="px-5 mb-10">
-        <div className="flex justify-between items-end mb-4">
-          <h2 className="text-xl font-bold flex items-center gap-2">
-            <Flame className="text-orange-500 fill-orange-500" size={20} /> Trending
+      {/* --- TRENDING SECTION (BORDERLESS STYLE) --- */}
+      <div className="px-5 mb-12">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-black flex items-center gap-2 uppercase tracking-tighter">
+            <Flame className="text-orange-500" size={20} fill="currentColor" /> Trending Now
           </h2>
-          <span onClick={() => navigate("/shop")} className="text-sm text-green-600 font-semibold cursor-pointer hover:underline">
-            See All
+          <span onClick={() => navigate("/shop")} className="text-[10px] font-black uppercase tracking-widest text-green-600 underline underline-offset-4">
+            Explore All
           </span>
         </div>
 
@@ -234,80 +188,71 @@ export default function Home() {
               <div
                 key={p.id}
                 onClick={() => navigate("/shop")}
-                className="bg-white p-3 rounded-2xl shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition active:scale-95"
+                className="bg-white rounded-[1.5rem] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-gray-50 active:scale-95 transition-all group"
               >
-                {/* Product Image - Removed Heart Icon */}
-                <div className="h-36 w-full overflow-hidden rounded-xl mb-3 bg-gray-50 relative">
+                {/* 🖼️ Flush Image Container */}
+                <div className="aspect-square w-full overflow-hidden bg-gray-50">
                   <img 
                     src={p.displayImage} 
                     alt={p.name} 
-                    className="w-full h-full object-cover" 
-                    onError={(e) => { e.target.src = 'https://via.placeholder.com/150?text=No+Image'; }}
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-700" 
                   />
                 </div>
                 
-                {/* Product Info */}
-                <h3 className="font-bold text-gray-800 text-sm truncate uppercase tracking-tight">{p.name}</h3>
-                <p className="text-green-600 font-bold text-sm mt-1">KES {p.price}</p>
+                {/* 📄 Minimal Info */}
+                <div className="p-3">
+                  <h3 className="font-bold text-gray-800 text-[11px] uppercase tracking-tight truncate leading-none">
+                    {p.name}
+                  </h3>
+                  <div className="flex justify-between items-center mt-2">
+                    <p className="text-black font-black text-sm">KES {Number(p.price).toLocaleString()}</p>
+                    <ShoppingBag size={12} className="text-gray-300" />
+                  </div>
+                </div>
               </div>
             ))
           ) : (
-            <p className="text-gray-400 text-sm col-span-2 text-center py-4">Loading trending deals...</p>
+            <div className="col-span-2 text-center py-10 opacity-30">
+               <div className="animate-pulse flex flex-col items-center">
+                  <div className="w-12 h-12 bg-gray-200 rounded-full mb-2"></div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest">Updating Feed...</p>
+               </div>
+            </div>
           )}
         </div>
       </div>
 
-      {/* SUPPORT FOOTER */}
-      <footer className="bg-gray-900 text-gray-400 py-10 px-6 rounded-t-3xl">
-        <div className="flex flex-col items-center gap-4 text-center">
-          <h3 className="text-white font-bold text-lg uppercase tracking-widest">Customer Support</h3>
+      {/* --- FOOTER --- */}
+      <footer className="bg-black text-white py-12 px-8 rounded-t-[3rem]">
+        <div className="flex flex-col items-center text-center">
+          <div className="w-12 h-1 w-white bg-green-500 rounded-full mb-6"></div>
+          <h3 className="font-black text-sm uppercase tracking-[4px] mb-8">Chuka Market</h3>
 
-          <div className="flex items-center gap-2">
-            <Phone size={18} className="text-green-500" />
-            <span className="font-bold">0737 107 602</span>
+          <div className="space-y-6">
+            <a href="tel:0737107602" className="flex items-center gap-3 bg-white/5 px-6 py-3 rounded-full border border-white/10">
+              <Phone size={16} className="text-green-500" />
+              <span className="text-xs font-bold tracking-widest">0737 107 602</span>
+            </a>
+
+            <a
+              href="https://wa.me/254737107602?text=Hello%20Marketplace"
+              target="_blank"
+              className="flex items-center gap-3 text-green-500 font-black text-[10px] uppercase tracking-[2px]"
+            >
+              Live WhatsApp Support
+            </a>
           </div>
 
-          <div className="mt-6 flex flex-col items-center gap-3">
-  <p className="text-sm font-semibold text-gray-300">
-    Support
-  </p>
-
-  <a
-    href="https://wa.me/254737107602?text=Hello%20I%20need%20support%20from%20your%20marketplace"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="flex items-center gap-2 text-green-500 font-semibold hover:text-green-400 transition"
-  >
-    {/* WhatsApp Icon */}
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 32 32"
-      width="20"
-      height="20"
-      fill="currentColor"
-    >
-      <path d="M16.001 3.2c-7.075 0-12.8 5.723-12.8 12.797 0 2.25.589 4.447 1.706 6.39L3.2 28.8l6.59-1.728a12.75 12.75 0 0 0 6.211 1.603h.002c7.073 0 12.797-5.723 12.797-12.797S23.074 3.2 16.001 3.2zm0 23.277a10.43 10.43 0 0 1-5.325-1.46l-.381-.226-3.91 1.026 1.043-3.812-.247-.392a10.397 10.397 0 0 1-1.59-5.555c0-5.765 4.693-10.456 10.46-10.456 5.764 0 10.456 4.691 10.456 10.456 0 5.764-4.692 10.456-10.456 10.456zm5.732-7.86c-.313-.156-1.85-.912-2.137-1.016-.286-.104-.494-.156-.703.156-.209.313-.809 1.016-.992 1.225-.182.209-.365.235-.677.078-.313-.156-1.32-.486-2.515-1.55-.93-.829-1.558-1.853-1.74-2.166-.182-.313-.02-.481.137-.637.14-.139.313-.365.469-.547.156-.182.209-.313.313-.521.104-.209.052-.391-.026-.547-.078-.156-.703-1.69-.964-2.314-.254-.61-.513-.527-.703-.537-.182-.01-.391-.013-.6-.013s-.547.078-.833.391c-.287.313-1.096 1.07-1.096 2.609 0 1.539 1.122 3.027 1.278 3.235.156.209 2.209 3.377 5.35 4.733.747.323 1.33.516 1.784.66.75.238 1.432.204 1.971.124.602-.089 1.85-.756 2.113-1.486.261-.73.261-1.356.182-1.486-.078-.13-.286-.209-.6-.365z" />
-    </svg>
-
-    <span>Chat with us on WhatsApp</span>
-  </a>
-</div>
-
-           <div className="flex flex-col items-center gap-3 mt-6">
-  <Link
-    to="/terms"
-    className="text-sm font-semibold text-green-500 hover:text-green-400 underline transition"
-  >
-    Terms & Conditions
-  </Link>
-</div>
-
-
-          <p className="text-sm text-gray-500 pt-8 font-medium border-t border-gray-800 mt-6 w-full uppercase tracking-wide text-center">
-            © 2026 Chuka Online Market. All Rights Reserved.
-          </p>
+          <div className="mt-12 pt-8 border-t border-white/5 w-full flex flex-col gap-4">
+            <Link to="/terms" className="text-[10px] font-bold text-gray-500 hover:text-white transition uppercase tracking-widest">
+              Terms & Conditions
+            </Link>
+            <p className="text-[9px] text-gray-600 uppercase tracking-widest">
+              © 2026 Chuka Online Market
+            </p>
+          </div>
         </div>
       </footer>
     </div>
   );
-}  
+}
