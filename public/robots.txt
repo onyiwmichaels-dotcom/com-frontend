@@ -1,3 +1,5 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow:/
+
+Sitemape:https://chukaonlinemarket.top/sitemap.xml

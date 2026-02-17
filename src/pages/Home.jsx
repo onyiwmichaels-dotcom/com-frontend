@@ -96,7 +96,7 @@ export default function Home() {
             className="wave-text text-[18px] sm:text-[22px] font-black tracking-tight transition-all duration-700 uppercase"
             style={{ fontFamily: fonts[fontIndex] }}
           >
-            Chuka Market
+            Chuka Online Market
           </h1>
         </div>
 
@@ -142,16 +142,16 @@ export default function Home() {
 
       {/* --- GREETING --- */}
       <div className="px-5 mb-8">
-        <p className="text-[10px] font-black uppercase tracking-[3px] text-green-600 mb-1">Authenticated</p>
+        <p className="text-[10px] font-black uppercase tracking-[3px] text-green-600 mb-1">Bei ni ya Comrade</p>
         <h1 className="text-3xl font-black tracking-tighter uppercase leading-none">
-          {user ? <>Yo, {user.name}!</> : <>Welcome Back</>}
+          {user ? <>Yo, {user.name}!</> : <>Welcome</>}
         </h1>
       </div>
 
       {/* --- CATEGORIES --- */}
       <div className="mb-10">
         <div className="px-5 flex justify-between items-center mb-4">
-          <h2 className="text-xs font-black uppercase tracking-widest text-gray-400">Department</h2>
+          <h2 className="text-xs font-black uppercase tracking-widest text-gray-400">Categories</h2>
         </div>
         <div className="flex gap-4 overflow-x-auto px-5 pb-2 no-scrollbar">
           {categories.map((cat) => (
